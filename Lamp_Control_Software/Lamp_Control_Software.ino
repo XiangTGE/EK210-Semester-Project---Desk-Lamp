@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * Software using voice commands to control onboard directable desk lamp
-  * @author  Xiang Jin
+  * @author  Xiang Jin, Alex Weintraub
   * @brief   Software using voice commands to control onboard directable desk lamp
   ******************************************************************************
   * @note:
@@ -19,17 +19,18 @@
  *  - Orientation: Has four section in LED array that can be turned on independently of each other
  *
  * On/off commands:
- *  - "Lights on" (records 0 to 3)
- *  - "Lights off" (records 4 to 7)
+ *  - "Lights on" (records 0 to 2)
+ *  - "Lights off" (records 3 to 5)
  * 
  * Brightness commands:
- *  - "Brightness 1" - 25% brightness (records 8 to 11)
- *  - "Brightness 2" - 50% brightness (records 12 to 15)
- *  - "Brightness 3" - 75% brightness (records 16 to 19)
- *  - "Brightness 4" - 100% brightness (records 20 to 23)
+ *  - "Low" - 33% brightness (records 6 to 8)
+ *  - "Medium" - 66% brightness (records 9 to 11)
+ *  - "High" - 100% brightness (records 12 to 14)
  *
- * Timer Commands:
- *  - 
+ * Timer Aspect:
+ *  - User will have option to turn on/off the timer, which sets lamp to turn off by itself after a set period of time
+ *  - Timer will reset whenever the motion sensor is triggered
+ *  - If lamp is off, it will turn on again after motion sensor is triggered
  *
  * Orientation Commands:
  *  - 
@@ -55,7 +56,7 @@ uint8_t buf[64];
 int led[4] = {3, 5, 7, 9};
 
 // Keep track of which LEDs are chosen to be controlled
-int activeLED[4] = {0, 0, 0, 0};
+int activeLED[4] = {1, 1, 1, 1};
 
 
 /**
@@ -152,21 +153,28 @@ void setup()
     while(1);
   }
   
-  // Load recordings for on (records 0 to 3)
-  for (int i = 0; i <= 3; i++) {
+
+  // Load recordings for on (records 0 to 2)
+  for (int i = 0; i <= 2; i++) {
 
     if (myVR.load((uint8_t)i) >= 0)
       Serial.println("On function: Record " + String(i) + " recorded.");
   }
 
-  // Load recordings for off (records 4 to 7)
-  for (int i = 4; i <= 7; i++) {
+  // Load recordings for off (records 3 to 5)
+  for (int i = 3; i <= 5; i++) {
 
     if (myVR.load((uint8_t)i) >= 0)
       Serial.println("Off function: Record " + String(i) + " recorded.");
   }
 
-  // Add more commands here as we go...
+
+  // Load brightness commands ()
+  for (int i = 6; i <= 14; i++) {
+
+    if (myVR.load((uint8_t)i) >= 0)
+      Serial.println("Brightness Command: Record " + String(i) + " recorded.");
+  }
 }
 
 void loop()
@@ -195,10 +203,7 @@ void loop()
 
       else if (buf[1] >= 16 && buf[1] <= 19)
         brightness_control(3);
-
-      else if (buf[1] >= 20 && buf[1] <= 23)
-        brightness_control(4);
-
+        
     } else if (buf[1] >= 24 && buf[1] <= 39) {  // Check for orientation command
 
 
@@ -221,10 +226,10 @@ void led_on_off (String toggle) {
 
   for (int i = 0; i < numLEDs; i++) {
 
-    if (activeLED[i] == 1 && toggle == "on")
+    if (activeLED[i] && toggle == "on")
       digitalWrite(led[i], HIGH);
     
-    else if (activeLED[i] == 1 && toggle == "off")
+    else if (activeLED[i] && toggle == "off")
       digitalWrite(led[i], LOW);
   }
 }
@@ -240,19 +245,15 @@ void brightness_control (int level) {
   // Determine duty cycle
   switch (level) {
 
-    case 1: // 25%
-      duty_cycle = 64;
+    case 1: // 33.33%%
+      duty_cycle = 85;
       break;
 
-    case 2: // 50%
-      duty_cycle = 127;
+    case 2: // 66.67%%
+      duty_cycle = 170;
       break;
 
-    case 3:
-      duty_cycle = 191;
-      break;
-
-    case 4: // 100%
+    case 3: // 100%
       duty_cycle = 255;
       break;
   }
@@ -267,7 +268,7 @@ void brightness_control (int level) {
 
 
 // Control which LED segments are active
-void orientation_control (int led_segment, ) {
+// void orientation_control (int led_segment, ) {
   
   
-}
+// }
