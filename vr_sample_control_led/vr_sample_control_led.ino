@@ -114,14 +114,14 @@ void setup()
   }
   
   // Load recordings for on (records 0 to 3)
-  for (int i = 0; i <= 3; i++) {
+  for (int i = 0; i <= 14; i++) {
 
     if (myVR.load((uint8_t)i) >= 0)
       Serial.println("On function: Record " + String(i) + " recorded.");
   }
 
   // Load recordings for off (records 4 to 7)
-  for (int i = 4; i <= 7; i++) {
+  for (int i = 15; i <= 29; i++) {
 
     if (myVR.load((uint8_t)i) >= 0)
       Serial.println("Off function: Record " + String(i) + " recorded.");
@@ -134,10 +134,10 @@ void loop()
   ret = myVR.recognize(buf, 50);
   if(ret>0){
 
-    if (buf[1] >= 0 && buf[1] <= 3) {
+    if (buf[2] >= 0 && buf[2] <= 2) {
 
       digitalWrite(led, HIGH);
-    } else if (buf[1] >= 4 && buf[1] <= 7) {
+    } else if (buf[2] >= 3 && buf[2] <= 5) {
 
       digitalWrite(led, LOW);
     } else {
