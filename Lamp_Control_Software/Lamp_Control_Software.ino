@@ -184,12 +184,12 @@ void loop()
   int ret = myVR.recognize(buf, 50);
 
   // Check if voice command received
-  if(ret>0){
+  if(ret>0) {
 
     if (buf[1] >= 0 && buf[1] <= 3) {           // Check for on/off command
 
       // Turn off all controllable segments
-      led_on_off("onoff");
+      led_on_off();
     } else if (buf[1] >= 3 && buf[1] <= 11) {   // Check for brightness command
 
       // Swtiches brightness based on input
@@ -204,25 +204,19 @@ void loop()
         
     } else if (buf[1] >= 12 && buf[1] <= 23) {  // Check for orientation command
         if (buf[1] >= 12 && buf[1] <= 14)
-          if activeLED[1] == 1
-            activeLED[1] = 1;
-          else 
-            activeLED[1] = 0;
+          activeLED[0] = !activeLED[0];
+
         else if (buf[1] >= 15 && buf[1] <= 17)
-          if activeLED[2] == 1
-            activeLED[2] = 1;
-          else 
-            activeLED[2] = 0;
+          activeLED[1] = !activeLED[1];
+
         else if (buf[1] >= 18 && buf[1] <= 20)
-          if activeLED[3] == 1
-            activeLED[3] = 1;
-          else 
-            activeLED[3] = 0;
+          activeLED[2] = !activeLED[2];
+
         else if (buf[1] >= 21 && buf[1] <= 23)
-          if activeLED[4] == 1
-            activeLED[4] = 1;
-          else 
-            activeLED[4] = 0;
+          activeLED[3] = !activeLED[3];
+
+        // Update lights
+        led_update();
 
     } else {
 
@@ -239,15 +233,21 @@ void loop()
 // Controllable LED segments on/off
 void led_on_off () {
 
+  // Number of LED sections
   int numLEDs = sizeof(activeLED) / sizeof(int);
 
+
+  // Toggle lights (all on or off)
   for (int i = 0; i < numLEDs; i++) {
 
-    if (activeLED[i] == 0)
-      digitalWrite(led[i], LOW);
-    
-    else if (activeLED[i] == 1)
-      digitalWrite(led[i], HIGH);
+    if (activeLED[i] == 1) {
+
+      // Turn all LED sections off
+      for (int i = 0; i < numLEDs; i++) 
+        digitalWrite(led[i], LOW);
+
+      break;
+    }
   }
 }
 
@@ -284,8 +284,15 @@ void brightness_control (int level) {
 }
 
 
-// Control which LED segments are active
-// void orientation_control (int led_segment, ) {
-  
-  
-// }
+// Update status of LEDs (make sure they are all on/off as designated by user)
+void led_update () {
+
+  for (int i = 0; i < numLEDs; i++) {
+
+    if (activeLED[i] == 0)
+      digitalWrite(led[i], LOW);
+    
+    else if (activeLED[i] == 1)
+      digitalWrite(led[i], HIGH);
+  }
+}
