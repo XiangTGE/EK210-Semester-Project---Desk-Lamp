@@ -45,20 +45,25 @@
 /**        
   Connection
   Arduino    VoiceRecognitionModule
-   2   ------->     TX
-   3   ------->     RX
+   7   ------->     TX
+   8   ------->     RX
 */
-VR myVR(2,3);    // 2:RX 3:TX, you can choose your favourite pins.
+VR myVR(7,8);    // 7:RX 8:TX, you can choose your favourite pins.
 
 uint8_t records[7]; // save record
 uint8_t buf[64];
 
 
 // LED array (four sections) - Each entry is PWM pin
-int led[4] = {3, 5, 7, 9};
+int led[4] = {3, 5, 6, 9};
 
-// Keep track of which LEDs are chosen to be controlled
-int activeLED[4] = {1, 1, 1, 1};
+// Keep track of which LEDs are chosen to be on/off
+// 1 means on, 0 means off
+int activeLED[4] = {0, 0, 0, 0};
+
+// Duty cycle of LEDs when turned on
+int ledDutyCycle = 255;
+
 
 
 /**
@@ -203,20 +208,21 @@ void loop()
         brightness_control(3);
         
     } else if (buf[1] >= 12 && buf[1] <= 23) {  // Check for orientation command
-        if (buf[1] >= 12 && buf[1] <= 14)
-          activeLED[0] = !activeLED[0];
+    
+      if (buf[1] >= 12 && buf[1] <= 14)
+        activeLED[0] = !activeLED[0];
 
-        else if (buf[1] >= 15 && buf[1] <= 17)
-          activeLED[1] = !activeLED[1];
+      else if (buf[1] >= 15 && buf[1] <= 17)
+        activeLED[1] = !activeLED[1];
 
-        else if (buf[1] >= 18 && buf[1] <= 20)
-          activeLED[2] = !activeLED[2];
+      else if (buf[1] >= 18 && buf[1] <= 20)
+        activeLED[2] = !activeLED[2];
 
-        else if (buf[1] >= 21 && buf[1] <= 23)
-          activeLED[3] = !activeLED[3];
+      else if (buf[1] >= 21 && buf[1] <= 23)
+        activeLED[3] = !activeLED[3];
 
-        // Update lights
-        led_update();
+      // Update lights
+      led_update();
 
     } else {
 
@@ -237,17 +243,36 @@ void led_on_off () {
   int numLEDs = sizeof(activeLED) / sizeof(int);
 
 
-  // Toggle lights (all on or off)
+  // Toggle lights off if at least one LED section is on
   for (int i = 0; i < numLEDs; i++) {
 
     if (activeLED[i] == 1) {
 
-      // Turn all LED sections off
-      for (int i = 0; i < numLEDs; i++) 
-        digitalWrite(led[i], LOW);
+      // Mark that all LEDs will be turned off
+      for (int i = 0; i < numLEDs; i++) {
 
-      break;
+        // Turn LED section on
+        //analogWrite(led[i], 0);
+        analogWrite(3, 0);
+
+        // Record LED as being turned off
+        activeLED[i] = 0;
+        
+        Serial.println("Off function run");
+      }
+
+      return;
     }
+  }
+
+  // At this point, this means all LEDs are off, will instead turn them all on
+  for (int i = 0; i < numLEDs; i++) {
+
+    // Turn LED section on
+    analogWrite(led[i], ledDutyCycle);
+
+    // Record LED as being on
+    activeLED[i] = 1;
   }
 }
 
@@ -281,18 +306,24 @@ void brightness_control (int level) {
     if (activeLED[i] == 1)
       analogWrite(led[i], duty_cycle);
   }
+
+  // Record duty cycle
+  ledDutyCycle = duty_cycle;
 }
 
 
 // Update status of LEDs (make sure they are all on/off as designated by user)
 void led_update () {
 
+  // Number of LED sections
+  int numLEDs = sizeof(activeLED) / sizeof(int);
+
+  // Loop through all LED sections and update their status
   for (int i = 0; i < numLEDs; i++) {
 
     if (activeLED[i] == 0)
       digitalWrite(led[i], LOW);
-    
-    else if (activeLED[i] == 1)
+    else
       digitalWrite(led[i], HIGH);
   }
 }
