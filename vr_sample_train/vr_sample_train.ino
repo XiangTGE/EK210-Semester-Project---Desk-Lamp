@@ -33,7 +33,7 @@
  * 2   ------->     TX
  * 3   ------->     RX
  */
-VR myVR(2,3);    // 2:RX 3:TX, you can choose your favourite pins.
+VR myVR(7,8);    // 2:RX 3:TX, you can choose your favourite pins.
 
 /***************************************************************************/
 /** declare print functions */

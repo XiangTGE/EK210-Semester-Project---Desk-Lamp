@@ -252,7 +252,6 @@ void led_on_off () {
       for (int i = 0; i < numLEDs; i++) {
 
         // Turn LED section on
-        //analogWrite(led[i], 0);
         analogWrite(3, 0);
 
         // Record LED as being turned off
@@ -278,7 +277,7 @@ void led_on_off () {
 
 
 // Controls brightness of LEDs
-// Four levels, 1-4
+// Three levels, 1-3
 // Each segment controlled by pins 3, 5, 6, 9 (these are PWM pins)
 void brightness_control (int level) {
 
@@ -327,3 +326,8 @@ void led_update () {
       digitalWrite(led[i], HIGH);
   }
 }
+
+
+// Timer feature
+// If turned on, will start timer - once 1 hour is up, lamp will turn off
+
