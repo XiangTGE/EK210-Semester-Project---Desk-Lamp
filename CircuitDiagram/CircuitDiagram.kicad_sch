@@ -2301,12 +2301,6 @@
 		(uuid "0f9f8ba0-cf36-4aae-9933-d037fd1918d0")
 	)
 	(junction
-		(at 44.45 59.69)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2288163f-08c7-478c-984f-32c2a53f0575")
-	)
-	(junction
 		(at 88.9 146.05)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2347,12 +2341,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9357c9b5-2ed2-43c6-b489-8e9484d68684")
-	)
-	(junction
-		(at 57.15 26.67)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "95288cb7-8d73-4624-861b-518acd45a421")
 	)
 	(junction
 		(at 113.03 138.43)
@@ -2406,6 +2394,17 @@
 			(color 132 132 132 1)
 		)
 		(uuid "0068bf9d-4305-4d2c-8e22-acc23afacc79")
+	)
+	(wire
+		(pts
+			(xy 35.56 83.82) (xy 66.04 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+			(color 132 132 132 1)
+		)
+		(uuid "062c0b23-71b0-47da-a7cd-c49ac042d3cd")
 	)
 	(wire
 		(pts
@@ -2498,16 +2497,6 @@
 			(type default)
 		)
 		(uuid "1681fe89-6b95-4aa1-815b-6728f48f0eea")
-	)
-	(wire
-		(pts
-			(xy 52.07 26.67) (xy 57.15 26.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "17c6f3d4-7cca-413b-a000-85ae35586f6e")
 	)
 	(wire
 		(pts
@@ -2624,16 +2613,6 @@
 	)
 	(wire
 		(pts
-			(xy 44.45 26.67) (xy 44.45 59.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "34b9bde2-fb53-47ba-846c-ac5c121462ea")
-	)
-	(wire
-		(pts
 			(xy 219.71 81.28) (xy 190.5 81.28)
 		)
 		(stroke
@@ -2734,6 +2713,16 @@
 	)
 	(wire
 		(pts
+			(xy 76.2 26.67) (xy 173.99 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "44866253-64f4-4731-9431-7d15c5448b2f")
+	)
+	(wire
+		(pts
 			(xy 223.52 53.34) (xy 223.52 34.29)
 		)
 		(stroke
@@ -2785,7 +2774,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 53.34) (xy 76.2 68.58)
+			(xy 76.2 26.67) (xy 76.2 68.58)
 		)
 		(stroke
 			(width 0)
@@ -3022,6 +3011,17 @@
 	)
 	(wire
 		(pts
+			(xy 33.02 86.36) (xy 66.04 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+			(color 132 132 132 1)
+		)
+		(uuid "8184deb5-8ac1-4aff-a544-34e2dacd0808")
+	)
+	(wire
+		(pts
 			(xy 76.2 121.92) (xy 76.2 129.54)
 		)
 		(stroke
@@ -3133,26 +3133,6 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 26.67) (xy 173.99 26.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a163a905-6d9e-4804-aba0-85ced99f173b")
-	)
-	(wire
-		(pts
-			(xy 33.02 86.36) (xy 66.04 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a33c724a-9daa-435b-b399-3dd5adcc0595")
-	)
-	(wire
-		(pts
 			(xy 219.71 80.01) (xy 219.71 81.28)
 		)
 		(stroke
@@ -3235,16 +3215,6 @@
 	)
 	(wire
 		(pts
-			(xy 57.15 26.67) (xy 62.23 26.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b3f6c1d4-daf4-42bb-806f-74c3a74f90bc")
-	)
-	(wire
-		(pts
 			(xy 219.71 114.3) (xy 190.5 114.3)
 		)
 		(stroke
@@ -3273,16 +3243,6 @@
 			(type default)
 		)
 		(uuid "b76550ac-5def-47c2-8548-4c29db544c17")
-	)
-	(wire
-		(pts
-			(xy 57.15 26.67) (xy 57.15 53.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ba6219db-f047-462f-8003-89b8ca1efe1a")
 	)
 	(wire
 		(pts
@@ -3360,17 +3320,7 @@
 	)
 	(wire
 		(pts
-			(xy 57.15 53.34) (xy 76.2 53.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d496341d-65b9-4a40-9da0-2f927fc8bd55")
-	)
-	(wire
-		(pts
-			(xy 44.45 59.69) (xy 86.36 59.69)
+			(xy 30.48 59.69) (xy 86.36 59.69)
 		)
 		(stroke
 			(width 0)
@@ -3419,16 +3369,6 @@
 			(color 132 132 132 1)
 		)
 		(uuid "df065e52-7f37-4315-bf41-fc4f887f12a0")
-	)
-	(wire
-		(pts
-			(xy 35.56 83.82) (xy 66.04 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e0b1e45e-e8fe-4780-8b80-913e6407cdc1")
 	)
 	(wire
 		(pts
@@ -3483,16 +3423,6 @@
 			(type default)
 		)
 		(uuid "f7cef0ce-8b5c-47bf-b77b-d71d4eea4983")
-	)
-	(wire
-		(pts
-			(xy 30.48 59.69) (xy 44.45 59.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f8d7b887-a6ad-4c79-af13-9f35c8bb6ad3")
 	)
 	(wire
 		(pts
@@ -3589,73 +3519,6 @@
 			(project "CircuitDiagram"
 				(path "/b4bf23ee-e5c4-404a-ad1d-c484e36cae28"
 					(reference "R4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 48.26 26.67 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "01e80969-73a4-4169-b5ea-ea2a2cbf313b")
-		(property "Reference" "R10"
-			(at 48.26 20.32 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "R330"
-			(at 48.26 22.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 48.26 24.892 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 48.26 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 48.26 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a9cc8fca-30f0-414f-b59b-cfb81bf46818")
-		)
-		(pin "2"
-			(uuid "df98685d-64ba-46bb-891f-b4490330ea36")
-		)
-		(instances
-			(project "CircuitDiagram"
-				(path "/b4bf23ee-e5c4-404a-ad1d-c484e36cae28"
-					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -4020,7 +3883,7 @@
 		(dnp no)
 		(uuid "45fdf593-db9d-4988-b315-87f58953db72")
 		(property "Reference" "V2"
-			(at 80.772 30.988 0)
+			(at 93.98 32.766 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4028,7 +3891,7 @@
 			)
 		)
 		(property "Value" "+12V"
-			(at 76.708 33.274 0)
+			(at 89.916 35.052 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5081,73 +4944,6 @@
 			(project "CircuitDiagram"
 				(path "/b4bf23ee-e5c4-404a-ad1d-c484e36cae28"
 					(reference "R5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 66.04 26.67 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "fae6753c-7356-4ae9-93ca-4447817fd692")
-		(property "Reference" "R9"
-			(at 66.04 20.32 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "R330"
-			(at 66.04 22.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 66.04 24.892 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 66.04 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 66.04 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "18887ca4-80a7-4283-9242-a462730cb269")
-		)
-		(pin "2"
-			(uuid "3f6f161c-51bb-45a4-b788-c7d8811ebadc")
-		)
-		(instances
-			(project "CircuitDiagram"
-				(path "/b4bf23ee-e5c4-404a-ad1d-c484e36cae28"
-					(reference "R9")
 					(unit 1)
 				)
 			)
