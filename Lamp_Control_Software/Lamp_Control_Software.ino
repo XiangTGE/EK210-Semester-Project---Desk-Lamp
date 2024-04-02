@@ -45,17 +45,17 @@
 /**        
   Connection
   Arduino    VoiceRecognitionModule
-   7   ------->     TX
-   8   ------->     RX
+   3   ------->     TX
+   2   ------->     RX
 */
-VR myVR(7,8);    // 7:RX 8:TX, you can choose your favourite pins.
+VR myVR(2,3);    // 7:RX 8:TX, you can choose your favourite pins.
 
 uint8_t records[7]; // save record
 uint8_t buf[64];
 
 
 // LED array (four sections) - Each entry is PWM pin
-int led[4] = {3, 5, 6, 9};
+int led[4] = {6, 9, 10, 11};
 
 // Keep track of which LEDs are chosen to be on/off
 // 1 means on, 0 means off
@@ -251,13 +251,11 @@ void led_on_off () {
       // Mark that all LEDs will be turned off
       for (int i = 0; i < numLEDs; i++) {
 
-        // Turn LED section on
-        analogWrite(3, 0);
+        // Turn LED section off
+        analogWrite(i, 0);
 
         // Record LED as being turned off
         activeLED[i] = 0;
-        
-        Serial.println("Off function run");
       }
 
       return;
