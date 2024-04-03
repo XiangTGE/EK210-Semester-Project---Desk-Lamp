@@ -25,37 +25,37 @@ void loop() {
   //analogWrite(3, 255);
 
   // Debug
-  // analogWrite(6, 25);
-  // delay(1000);
-  // analogWrite(6, 0);
-  // delay(1000);
+  analogWrite(6, 25);
+  delay(1000);
+  analogWrite(6, 0);
+  delay(1000);
 
-  // analogWrite(9, 25);
-  // delay(1000);
-  // analogWrite(9, 0);
-  // delay(1000);
+  analogWrite(9, 25);
+  delay(1000);
+  analogWrite(9, 0);
+  delay(1000);
 
-  // analogWrite(10, 25);
-  // delay(1000);
-  // analogWrite(10, 0);
-  // delay(1000);
+  analogWrite(10, 25);
+  delay(1000);
+  analogWrite(10, 0);
+  delay(1000);
 
-  // analogWrite(11, 25);
-  // delay(1000);
-  // analogWrite(11, 0);
-  // delay(1000);
+  analogWrite(11, 25);
+  delay(1000);
+  analogWrite(11, 0);
+  delay(1000);
 
   // // All light up
-  // analogWrite(6, 25);
-  // analogWrite(9, 25);
-  // analogWrite(10, 25);
-  // analogWrite(11, 25);
-  // delay(5000);
-  // analogWrite(6, 0);
-  // analogWrite(9, 0);
-  // analogWrite(10,0);
-  // analogWrite(11,0);
-  // delay(2000);
+  analogWrite(6, 25);
+  analogWrite(9, 25);
+  analogWrite(10, 25);
+  analogWrite(11, 25);
+  delay(5000);
+  analogWrite(6, 0);
+  analogWrite(9, 0);
+  analogWrite(10,0);
+  analogWrite(11,0);
+  delay(2000);
   
   // Brightness control
   for (int i = 10; i <= 255; i+=50) {
