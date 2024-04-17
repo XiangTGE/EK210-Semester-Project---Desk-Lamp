@@ -311,4 +311,14 @@ void led_update () {
 
 // Timer feature
 // If turned on, will start timer - once 1 hour is up, lamp will turn off
-
+int TimePeriod = 1800000
+int periodStartTime = 0
+void timeOver () {
+  currentMillis  = millis();
+  if ( currentMillis - periodStartTime >= TimePeriod )
+  {
+    periodStartTime = currentMillis; // set new expireTime
+    return true;                // more time than TimePeriod) has elapsed since last time if-condition was true
+  }
+  else return false;            // not expired
+}
