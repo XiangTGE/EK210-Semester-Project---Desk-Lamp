@@ -247,7 +247,7 @@ void loop()
     startTime = millis() 
   }
 
-  if lamp_on && millis() - tartTime >= timerDuration) {
+  if lamp_on && millis() - startTime >= timerDuration) {
     // turn lamp off after 30 minutes
     led_on_off();
   }
