@@ -32,10 +32,10 @@
  *  - If lamp is off, it will turn on again after motion sensor is triggered
  *
  * Orientation Commands:
- *  - Quadrant I - records 12 to 14
- *  - Quadrant II - records 15 to 17
- *  - Quadrant III - records 18 to 20
- *  - Quadrant IV - records 21 to 23
+ *  - Quadrant I ("one") - records 12 to 14
+ *  - Quadrant II ("two") - records 15 to 17
+ *  - Quadrant III ("three") - records 18 to 20
+ *  - Quadrant IV ("four") - records 21 to 23
 */
 
 #include <SoftwareSerial.h>
@@ -48,21 +48,24 @@
    3   ------->     TX
    2   ------->     RX
 */
-VR myVR(2,3);    // 7:RX 8:TX, you can choose your favourite pins.
+VR myVR(2,3);    // 2:RX 3:TX, you can choose your favourite pins.
 
 uint8_t records[7]; // save record
 uint8_t buf[64];
 
+// Keep track of whether lamp is turned on or off
+int lamp_on = 0;
 
 // LED array (four sections) - Each entry is PWM pin
 int led[4] = {6, 9, 10, 11};
 
-// Keep track of which LEDs are chosen to be on/off
-// 1 means on, 0 means off
-int activeLED[4] = {0, 0, 0, 0};
+// Keep track of which LEDs are chosen to be armed/unarmed
+// 1 means armed, 0 means not armed
+int armedLED[4] = {0, 0, 0, 0};
 
 // Duty cycle of LEDs when turned on
-int ledDutyCycle = 255;
+int maxBrightness = 100;
+int ledDutyCycle = maxBrightness;
 
 
 
@@ -165,15 +168,15 @@ void setup()
   for (int i = 0; i <= 2; i++) {
 
     if (myVR.load((uint8_t)i) >= 0)
-      Serial.println("On function: Record " + String(i) + " recorded.");
+      Serial.println("Lamp toggle function: Record " + String(i) + " recorded.");
   }
 
   // Load recordings for off (records 3 to 5)
-  for (int i = 3; i <= 5; i++) {
+  // for (int i = 3; i <= 5; i++) {
 
-    if (myVR.load((uint8_t)i) >= 0)
-      Serial.println("Off function: Record " + String(i) + " recorded.");
-  }
+  //   if (myVR.load((uint8_t)i) >= 0)
+  //     Serial.println("Off function: Record " + String(i) + " recorded.");
+  // }
 
 
   // Load brightness commands ()
@@ -210,20 +213,16 @@ void loop()
     } else if (buf[1] >= 12 && buf[1] <= 23) {  // Check for orientation command
     
       if (buf[1] >= 12 && buf[1] <= 14)
-        activeLED[0] = !activeLED[0];
+        armedLED[0] = !armedLED[0];
 
       else if (buf[1] >= 15 && buf[1] <= 17)
-        activeLED[1] = !activeLED[1];
+        armedLED[1] = !armedLED[1];
 
       else if (buf[1] >= 18 && buf[1] <= 20)
-        activeLED[2] = !activeLED[2];
+        armedLED[2] = !armedLED[2];
 
       else if (buf[1] >= 21 && buf[1] <= 23)
-        activeLED[3] = !activeLED[3];
-
-      // Update lights
-      led_update();
-
+        armedLED[3] = !armedLED[3];
     } else {
 
       Serial.println("Unexpected error: no command found");
@@ -232,6 +231,10 @@ void loop()
     /** voice recognized */
     printVR(buf);
   }
+
+
+  // Update LEDs
+  led_update();
 }
 
 
@@ -240,37 +243,14 @@ void loop()
 void led_on_off () {
 
   // Number of LED sections
-  int numLEDs = sizeof(activeLED) / sizeof(int);
+  int numLEDs = sizeof(armedLED) / sizeof(int);
 
 
-  // Toggle lights off if at least one LED section is on
-  for (int i = 0; i < numLEDs; i++) {
-
-    if (activeLED[i] == 1) {
-
-      // Mark that all LEDs will be turned off
-      for (int i = 0; i < numLEDs; i++) {
-
-        // Turn LED section off
-        analogWrite(i, 0);
-
-        // Record LED as being turned off
-        activeLED[i] = 0;
-      }
-
-      return;
-    }
-  }
-
-  // At this point, this means all LEDs are off, will instead turn them all on
-  for (int i = 0; i < numLEDs; i++) {
-
-    // Turn LED section on
-    analogWrite(led[i], ledDutyCycle);
-
-    // Record LED as being on
-    activeLED[i] = 1;
-  }
+  // Toggle lamp on/off status
+  if (lamp_on)
+    lamp_on = 0;
+  else 
+    lamp_on = 1;
 }
 
 
@@ -285,24 +265,18 @@ void brightness_control (int level) {
   switch (level) {
 
     case 1: // 33.33%%
-      duty_cycle = 85;
+      duty_cycle = maxBrightness * 0.33;
       break;
 
     case 2: // 66.67%%
-      duty_cycle = 170;
+      duty_cycle = maxBrightness * 0.66;
       break;
 
     case 3: // 100%
-      duty_cycle = 255;
+      duty_cycle = maxBrightness;
       break;
   }
 
-  // Switch LEDs to this brightness
-  for (int i = 0; i < sizeof(led)/sizeof(int); i++) {
-
-    if (activeLED[i] == 1)
-      analogWrite(led[i], duty_cycle);
-  }
 
   // Record duty cycle
   ledDutyCycle = duty_cycle;
@@ -313,15 +287,24 @@ void brightness_control (int level) {
 void led_update () {
 
   // Number of LED sections
-  int numLEDs = sizeof(activeLED) / sizeof(int);
+  int numLEDs = sizeof(armedLED) / sizeof(int);
 
   // Loop through all LED sections and update their status
-  for (int i = 0; i < numLEDs; i++) {
+  if (lamp_on) {
 
-    if (activeLED[i] == 0)
-      digitalWrite(led[i], LOW);
-    else
-      digitalWrite(led[i], HIGH);
+    for (int i = 0; i < numLEDs; i++) {
+
+      if (armedLED[i] == 0)
+        analogWrite(led[i], 0);
+      else
+        analogWrite(led[i], ledDutyCycle);
+    }
+  } else {  // Lamp start is off, turn off all LEDs
+
+    for (int i = 0; i < numLEDs; i++) {
+
+      analogWrite(led[i], 0);
+    }
   }
 }
 
