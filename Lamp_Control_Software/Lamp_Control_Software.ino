@@ -72,6 +72,9 @@ int ledDutyCycle = maxBrightness;
 int motion_sensor = 4;
 int motion_detected = 0;
 
+// timer ints
+int startTime = 0;
+int timerDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
 
 /**
   @brief   Print signature, if the character is invisible, 
@@ -231,14 +234,23 @@ void loop()
 
     /** voice recognized */
     printVR(buf);
+
+    // reset timer whenever voive command is called
+    startTime = millis(); 
   }
 
 
   // Determine if motion sensor is activated; if it is, then turn reset timer
   motion_detected = digitalRead(motion_sensor);
-  if (motion_detected) {}
-    // Reset timer
+  if (motion_detected) {
+    // Reset timer when motion is detected
+    startTime = millis() 
+  }
 
+  if lamp_on && millis() - tartTime >= timerDuration) {
+    // turn lamp off after 30 minutes
+    led_on_off();
+  }
 
   // Update LEDs
   led_update();
@@ -329,3 +341,6 @@ void timeOver () {
   }
   else return false;            // not expired
 }
+void loop ()
+  if currentMillis = periodStartTime
+  lamp_on
