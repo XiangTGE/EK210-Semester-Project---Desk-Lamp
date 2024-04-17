@@ -68,6 +68,10 @@ int maxBrightness = 100;
 int ledDutyCycle = maxBrightness;
 
 
+// Motion sensor pins
+int motion_sensor = 4;
+int motion_detected = 0;
+
 
 /**
   @brief   Print signature, if the character is invisible, 
@@ -139,7 +143,7 @@ void setup()
   myVR.begin(9600);
   
   Serial.begin(115200);
-  Serial.println("EK210 Directable Desk Lamp 1.0");
+  Serial.println("EK210 Directable Desk Lamp 1.1");
   
 
   // Initialize LEDs
@@ -171,13 +175,6 @@ void setup()
       Serial.println("Lamp toggle function: Record " + String(i) + " recorded.");
   }
 
-  // Load recordings for off (records 3 to 5)
-  // for (int i = 3; i <= 5; i++) {
-
-  //   if (myVR.load((uint8_t)i) >= 0)
-  //     Serial.println("Off function: Record " + String(i) + " recorded.");
-  // }
-
 
   // Load brightness commands ()
   for (int i = 6; i <= 14; i++) {
@@ -185,6 +182,10 @@ void setup()
     if (myVR.load((uint8_t)i) >= 0)
       Serial.println("Brightness Command: Record " + String(i) + " recorded.");
   }
+
+
+  // Declare motion sensor as input
+  pinMode(motion_sensor, INPUT);
 }
 
 void loop()
@@ -231,6 +232,12 @@ void loop()
     /** voice recognized */
     printVR(buf);
   }
+
+
+  // Determine if motion sensor is activated; if it is, then turn reset timer
+  motion_detected = digitalRead(motion_sensor);
+  if (motion_detected) {}
+    // Reset timer
 
 
   // Update LEDs
