@@ -158,7 +158,7 @@ void setup()
     Serial.println("LED " + led[i] + String(" loaded."));
   }
     
-
+  // Voice recognition 
   if(myVR.clear() == 0){
     Serial.println("Recognizer cleared.");
   }else{
