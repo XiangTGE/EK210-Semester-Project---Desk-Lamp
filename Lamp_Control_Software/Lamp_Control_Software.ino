@@ -22,9 +22,8 @@
  *  - "Lamp" (records 0 to 2)
  * 
  * Brightness commands:
- *  - "Low" - 33% brightness (records 3 to 5)
- *  - "Medium" - 66% brightness (records 6 to 8)
- *  - "High" - 100% brightness (records 9 to 11)
+ *  - "Bright" - Brightness up  (record 5)
+ *  - "Dim"    - Brightness down (record 6)
  *
  * Timer Aspect:
  *  - User will have option to turn on/off the timer, which sets lamp to turn off by itself after a set period of time
@@ -32,10 +31,10 @@
  *  - If lamp is off, it will turn on again after motion sensor is triggered
  *
  * Orientation Commands:
- *  - Quadrant I ("one") - records 12 to 14
- *  - Quadrant II ("two") - records 15 to 17
- *  - Quadrant III ("three") - records 18 to 20
- *  - Quadrant IV ("four") - records 21 to 23
+ *  - Quadrant I ("one") - record 1
+ *  - Quadrant II ("two") - record 2
+ *  - Quadrant III ("three") - record 3
+ *  - Quadrant IV ("four") - record 4
 */
 
 #include <SoftwareSerial.h>
@@ -53,6 +52,7 @@ VR myVR(2,3);    // 2:RX 3:TX, you can choose your favourite pins.
 uint8_t records[7]; // save record
 uint8_t buf[64];
 
+
 // Keep track of whether lamp is turned on or off
 int lamp_on = 0;
 
@@ -61,10 +61,15 @@ int led[4] = {6, 9, 10, 11};
 
 // Keep track of which LEDs are chosen to be armed/unarmed
 // 1 means armed, 0 means not armed
-int armedLED[4] = {0, 0, 0, 0};
+int armedLED[4] = {1, 1, 1, 1};
+
+
+// List of brightnesses
+int brightness_list[5] = {50, 100, 150, 200, 250}; // Default max brightness
+int brightness_selector = 2;
 
 // Duty cycle of LEDs when turned on
-int maxBrightness = 100;
+int maxBrightness = brightness_list[sizeof(brightness_list)/sizeof(int)-1];
 int ledDutyCycle = maxBrightness;
 
 
@@ -75,6 +80,7 @@ int motion_detected = 0;
 // timer ints
 int startTime = 0;
 int timerDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+
 
 /**
   @brief   Print signature, if the character is invisible, 
@@ -171,16 +177,20 @@ void setup()
   }
   
 
-  // Load recordings for on (records 0 to 2)
-  for (int i = 0; i <= 2; i++) {
+  // Load recordings for lamp on/off toggle (record 0)
+  if (myVR.load((uint8_t)0) >= 0)
+    Serial.println("Lamp toggle function: Record " + String(0) + " recorded.");
+
+
+  // Load orientation commands (records 12 to 23)
+  for (int i = 1; i <= 4; i++) {
 
     if (myVR.load((uint8_t)i) >= 0)
-      Serial.println("Lamp toggle function: Record " + String(i) + " recorded.");
+      Serial.println("Orientation Command: Record " + String(i) + " recorded.");
   }
 
-
-  // Load brightness commands ()
-  for (int i = 6; i <= 14; i++) {
+  // Load brightness commands (records 3 to 11)
+  for (int i = 5; i <= 6; i++) {
 
     if (myVR.load((uint8_t)i) >= 0)
       Serial.println("Brightness Command: Record " + String(i) + " recorded.");
@@ -198,35 +208,29 @@ void loop()
   // Check if voice command received
   if(ret>0) {
 
-    if (buf[1] >= 0 && buf[1] <= 3) {           // Check for on/off command
+    if (buf[1] == 0) {           // Check for on/off command
 
       // Turn off all controllable segments
       led_on_off();
-    } else if (buf[1] >= 3 && buf[1] <= 11) {   // Check for brightness command
+    } else if (buf[1] == 5 || buf[1] == 6) {   // Check for brightness command
 
       // Swtiches brightness based on input
-      if (buf[1] >= 3 && buf[1] <= 5)
+      if (buf[1] == 5) {                        // Brightness increase command
+
         brightness_control(1);
+      } else if (buf[1] == 6) {                 // Brightness decrease command
 
-      else if (buf[1] >= 6 && buf[1] <= 8)
-        brightness_control(2);
-
-      else if (buf[1] >= 9 && buf[1] <= 11)
-        brightness_control(3);
+        brightness_control(0);
+      }
         
-    } else if (buf[1] >= 12 && buf[1] <= 23) {  // Check for orientation command
+    } else if (buf[1] >= 1 && buf[1] <= 4) {  // Check for orientation command
     
-      if (buf[1] >= 12 && buf[1] <= 14)
-        armedLED[0] = !armedLED[0];
-
-      else if (buf[1] >= 15 && buf[1] <= 17)
-        armedLED[1] = !armedLED[1];
-
-      else if (buf[1] >= 18 && buf[1] <= 20)
-        armedLED[2] = !armedLED[2];
-
-      else if (buf[1] >= 21 && buf[1] <= 23)
-        armedLED[3] = !armedLED[3];
+      int selected_LED = buf[1];
+      
+      if (armedLED[selected_LED] == 1)
+        armedLED[selected_LED] = 0;
+      else
+        armedLED[selected_LED] = 1;
     } else {
 
       Serial.println("Unexpected error: no command found");
@@ -235,22 +239,23 @@ void loop()
     /** voice recognized */
     printVR(buf);
 
-    // reset timer whenever voive command is called
+    // reset timer whenever voice command is called
     startTime = millis(); 
   }
 
 
   // Determine if motion sensor is activated; if it is, then turn reset timer
-  motion_detected = digitalRead(motion_sensor);
-  if (motion_detected) {
-    // Reset timer when motion is detected
-    startTime = millis() 
-  }
+  // motion_detected = digitalRead(motion_sensor);
+  // if (motion_detected) {
+  //   // Reset timer when motion is detected
+  //   startTime = millis();
+  // }
 
-  if lamp_on && millis() - startTime >= timerDuration) {
-    // turn lamp off after 30 minutes
-    led_on_off();
-  }
+  // if (lamp_on && (millis() - startTime) >= timerDuration) {
+  //   // turn lamp off after 30 minutes
+  //   lamp_on = 0;
+  // }
+
 
   // Update LEDs
   led_update();
@@ -270,35 +275,35 @@ void led_on_off () {
     lamp_on = 0;
   else 
     lamp_on = 1;
+
+  // Display status of each LED (DEBUG)
+  // Serial.print("Status of LEDS: ");
+  // for (int i = 1; i <= 4; i++)
+  //   Serial.print(String(i) + ": " + String(armedLED[i+1]) + " ");
+  // Serial.print("\n");
 }
 
 
 // Controls brightness of LEDs
 // Three levels, 1-3
 // Each segment controlled by pins 3, 5, 6, 9 (these are PWM pins)
-void brightness_control (int level) {
+// direction dictates whether to make brighter (1) or dimmer (0)
+void brightness_control (int direction) {
 
-  int duty_cycle = 0; // Duty cycle out of 255
+  int max_bright = sizeof(brightness_list) / sizeof(int) - 1;   // Max brightness option (number of brightness levels - 1 due to array)
 
-  // Determine duty cycle
-  switch (level) {
+  if (direction) {                                            // Brighter command
 
-    case 1: // 33.33%%
-      duty_cycle = maxBrightness * 0.33;
-      break;
+    if (brightness_selector != max_bright)
+      brightness_selector++;
+  } else {                                                    // Dimmer command
 
-    case 2: // 66.67%%
-      duty_cycle = maxBrightness * 0.66;
-      break;
-
-    case 3: // 100%
-      duty_cycle = maxBrightness;
-      break;
+    if (brightness_selector != 0)
+      brightness_selector--;
   }
 
-
-  // Record duty cycle
-  ledDutyCycle = duty_cycle;
+  // Set brightness
+  ledDutyCycle = brightness_list[brightness_selector];
 }
 
 
