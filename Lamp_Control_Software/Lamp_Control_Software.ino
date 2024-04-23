@@ -22,8 +22,8 @@
  *  - "Lamp" (records 0 to 2)
  * 
  * Brightness commands:
- *  - "Bright" - Brightness up  (record 5)
- *  - "Dim"    - Brightness down (record 6)
+ *  - "High" - Brightness up  (record 5)
+ *  - "Low"    - Brightness down (record 6)
  *
  * Timer Aspect:
  *  - User will have option to turn on/off the timer, which sets lamp to turn off by itself after a set period of time
@@ -69,8 +69,8 @@ int brightness_list[5] = {50, 100, 150, 200, 250}; // Default max brightness
 int brightness_selector = 2;
 
 // Duty cycle of LEDs when turned on
-int maxBrightness = brightness_list[sizeof(brightness_list)/sizeof(int)-1];
-int ledDutyCycle = maxBrightness;
+int maxBrightness = brightness_list[4];
+int ledDutyCycle = brightness_list[2];
 
 
 // Motion sensor pins
@@ -78,8 +78,8 @@ int motion_sensor = 4;
 int motion_detected = 0;
 
 // timer ints
-int startTime = 0;
-int timerDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+long startTime = 0;
+long timerDuration = 15 * 60 * 1000; // 15 minutes in milliseconds
 
 
 /**
@@ -225,9 +225,17 @@ void loop()
         
     } else if (buf[1] >= 1 && buf[1] <= 4) {  // Check for orientation command
     
-      int selected_LED = buf[1];
+      int selected_LED = buf[1]-1;
       
-      if (armedLED[selected_LED] == 1)
+      // Don't execute LED off command if there is only one LED on
+      int lights_on = 0;
+      for (int i = 0; i <= 3; i++) {
+
+        if (armedLED[i] == 1)
+          lights_on++;
+      }
+
+      if (armedLED[selected_LED] == 1 && lights_on != 1)
         armedLED[selected_LED] = 0;
       else
         armedLED[selected_LED] = 1;
@@ -245,16 +253,17 @@ void loop()
 
 
   // Determine if motion sensor is activated; if it is, then turn reset timer
-  // motion_detected = digitalRead(motion_sensor);
-  // if (motion_detected) {
-  //   // Reset timer when motion is detected
-  //   startTime = millis();
-  // }
+  motion_detected = digitalRead(motion_sensor);
+  if (motion_detected) {
+    // Reset timer when motion is detected, turn on lamp
+    startTime = millis();
+    lamp_on = 1;
+  }
 
-  // if (lamp_on && (millis() - startTime) >= timerDuration) {
-  //   // turn lamp off after 30 minutes
-  //   lamp_on = 0;
-  // }
+  if (lamp_on && (millis() - startTime) >= timerDuration) {
+    // turn lamp off after 30 minutes
+    lamp_on = 0;
+  }
 
 
   // Update LEDs
@@ -275,12 +284,6 @@ void led_on_off () {
     lamp_on = 0;
   else 
     lamp_on = 1;
-
-  // Display status of each LED (DEBUG)
-  // Serial.print("Status of LEDS: ");
-  // for (int i = 1; i <= 4; i++)
-  //   Serial.print(String(i) + ": " + String(armedLED[i+1]) + " ");
-  // Serial.print("\n");
 }
 
 
