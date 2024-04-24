@@ -79,7 +79,7 @@ int motion_detected = 0;
 
 // timer ints
 long startTime = 0;
-long timerDuration = 15 * 60 * 1000; // 15 minutes in milliseconds
+long timerDuration = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 
 /**
