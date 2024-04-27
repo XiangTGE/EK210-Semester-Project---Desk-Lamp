@@ -2287,6 +2287,144 @@
 				)
 			)
 		)
+		(symbol "Sensor_Motion:BMF055"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U1"
+				(at 1.524 5.588 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "PIR Motion Sensor"
+				(at 1.524 3.048 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_LGA:LGA-28_5.2x3.8mm_P0.5mm"
+				(at 39.878 30.734 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmf055-ds000.pdf"
+				(at 78.74 25.146 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Custom programmable 9-axis motion sensor"
+				(at 58.166 20.066 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "9-axis motion sensor IMU SAMD20 ARM Cortex-M0+"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "LGA*5.2x3.8mm*P0.5mm*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "BMF055_0_1"
+				(rectangle
+					(start -11.43 1.27)
+					(end 11.43 -20.32)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "BMF055_1_1"
+				(pin power_in line
+					(at -5.08 -22.86 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 0 -22.86 90)
+					(length 2.54)
+					(name "OUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 5.08 -22.86 90)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 	)
 	(junction
 		(at 173.99 59.69)
@@ -2299,6 +2437,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0f9f8ba0-cf36-4aae-9933-d037fd1918d0")
+	)
+	(junction
+		(at 76.2 52.07)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "185ee890-4464-4297-a7f1-1df239776bfd")
 	)
 	(junction
 		(at 88.9 146.05)
@@ -2353,6 +2497,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c76c5457-5b23-48b0-bef7-b82c60ad822b")
+	)
+	(junction
+		(at 33.02 59.69)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d41614ae-b439-4ef7-89c4-9fd387c72e95")
 	)
 	(junction
 		(at 110.49 135.89)
@@ -2613,6 +2763,27 @@
 	)
 	(wire
 		(pts
+			(xy 66.04 88.9) (xy 38.1 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+			(color 132 132 132 1)
+		)
+		(uuid "321a2b84-7e25-4581-bc72-e03f9c278ca3")
+	)
+	(wire
+		(pts
+			(xy 33.02 48.26) (xy 33.02 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "371e2ffa-acd1-4e5e-9ed9-e0fda05ae03d")
+	)
+	(wire
+		(pts
 			(xy 219.71 81.28) (xy 190.5 81.28)
 		)
 		(stroke
@@ -2723,6 +2894,16 @@
 	)
 	(wire
 		(pts
+			(xy 30.48 59.69) (xy 33.02 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "49e7b9b7-8d44-4608-80c9-de7a82c745c3")
+	)
+	(wire
+		(pts
 			(xy 223.52 53.34) (xy 223.52 34.29)
 		)
 		(stroke
@@ -2774,7 +2955,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 26.67) (xy 76.2 68.58)
+			(xy 76.2 26.67) (xy 76.2 52.07)
 		)
 		(stroke
 			(width 0)
@@ -2907,6 +3088,16 @@
 	)
 	(wire
 		(pts
+			(xy 43.18 48.26) (xy 43.18 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "652b49d0-3529-4e8c-95a9-f8dd4d1f365d")
+	)
+	(wire
+		(pts
 			(xy 190.5 114.3) (xy 190.5 146.05)
 		)
 		(stroke
@@ -2956,6 +3147,16 @@
 			(color 132 132 132 1)
 		)
 		(uuid "6e1130b6-f0a8-4f75-9da5-5309fdb0e552")
+	)
+	(wire
+		(pts
+			(xy 76.2 52.07) (xy 76.2 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6f6e2ddb-c833-4e2e-9104-a9375a84a200")
 	)
 	(wire
 		(pts
@@ -3195,6 +3396,16 @@
 	)
 	(wire
 		(pts
+			(xy 43.18 52.07) (xy 76.2 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b152350f-0e77-4f7b-b456-ebef635ddf64")
+	)
+	(wire
+		(pts
 			(xy 190.5 146.05) (xy 88.9 146.05)
 		)
 		(stroke
@@ -3320,16 +3531,6 @@
 	)
 	(wire
 		(pts
-			(xy 30.48 59.69) (xy 86.36 59.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d7656953-2b77-4c41-9618-f7caf2adb7f7")
-	)
-	(wire
-		(pts
 			(xy 219.71 46.99) (xy 219.71 48.26)
 		)
 		(stroke
@@ -3383,6 +3584,16 @@
 	)
 	(wire
 		(pts
+			(xy 33.02 59.69) (xy 86.36 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e20c7eeb-9424-4308-b44e-386d046c1cb7")
+	)
+	(wire
+		(pts
 			(xy 199.39 138.43) (xy 199.39 107.95)
 		)
 		(stroke
@@ -3423,6 +3634,17 @@
 			(type default)
 		)
 		(uuid "f7cef0ce-8b5c-47bf-b77b-d71d4eea4983")
+	)
+	(wire
+		(pts
+			(xy 38.1 88.9) (xy 38.1 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+			(color 132 132 132 1)
+		)
+		(uuid "f8a95f2d-7fd3-447d-bb60-91602214017a")
 	)
 	(wire
 		(pts
@@ -3722,6 +3944,80 @@
 			(project "CircuitDiagram"
 				(path "/b4bf23ee-e5c4-404a-ad1d-c484e36cae28"
 					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Sensor_Motion:BMF055")
+		(at 38.1 25.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "33898b53-1a5b-4dd3-ae03-244ceaa3cd19")
+		(property "Reference" "U1"
+			(at 39.624 19.812 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "PIR Motion Sensor"
+			(at 39.624 22.352 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_LGA:LGA-28_5.2x3.8mm_P0.5mm"
+			(at 77.978 -5.334 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmf055-ds000.pdf"
+			(at 116.84 0.254 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Custom programmable 9-axis motion sensor"
+			(at 96.266 5.334 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin ""
+			(uuid "aedf530b-2ca2-4a2c-8fc0-c920adb13e0c")
+		)
+		(pin ""
+			(uuid "0f05721b-6418-4577-aec2-eb7421f8b1ca")
+		)
+		(pin ""
+			(uuid "47f326ed-973f-4030-aff1-a8e5309c861e")
+		)
+		(instances
+			(project "CircuitDiagram"
+				(path "/b4bf23ee-e5c4-404a-ad1d-c484e36cae28"
+					(reference "U1")
 					(unit 1)
 				)
 			)
